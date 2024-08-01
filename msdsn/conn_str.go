@@ -179,6 +179,11 @@ func SetupTLS(certificate string, insecureSkipVerify bool, hostInCertificate str
 	}
 
 	if len(certificate) == 0 {
+		p, err := x509.SystemCertPool()
+		if err != nil {
+			return nil, err
+		}
+		config.RootCAs = p
 		return &config, nil
 	}
 	pem, err := readCertificate(certificate)
